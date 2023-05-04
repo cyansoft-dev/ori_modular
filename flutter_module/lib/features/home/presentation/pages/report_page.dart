@@ -32,7 +32,7 @@ class _ReportPageState extends State<ReportPage>
 
   @override
   Widget build(BuildContext context) {
-    final User? userData = context.select((AuthCubit user) => user.state.data);
+    final userData = context.select((AuthCubit user) => user.state.data);
 
     return Scaffold(
       body: CustomScrollView(

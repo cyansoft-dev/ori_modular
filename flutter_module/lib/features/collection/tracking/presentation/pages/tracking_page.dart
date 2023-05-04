@@ -70,10 +70,10 @@ class _TrackingPageState extends State<TrackingPage>
                   pinned: true, delegate: TrackingHeaderDelegate()),
               AppStateSliver(
                 state: state,
-                onData: (tracking) {
-                  final data = tracking.listTracking ?? <DataTracking>[];
+                onData: (trackData) {
+                  final tracking = trackData.listTracking ?? <DataTracking>[];
 
-                  if (data.isEmpty) {
+                  if (tracking.isEmpty) {
                     return SliverFillRemaining(
                       hasScrollBody: false,
                       child: Center(
@@ -92,15 +92,15 @@ class _TrackingPageState extends State<TrackingPage>
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          final nominal = data[index].salesDetail?.fold(
+                          final nominal = tracking[index].salesDetail?.fold(
                               0.0,
                               (prev, next) =>
                                   prev + (next.nominal ?? 0.0).toDouble());
 
-                          final lampiran = data[index].salesDetail?.fold(
+                          final lampiran = tracking[index].salesDetail?.fold(
                               0, (prev, next) => prev + (next.lampiran ?? 0));
 
-                          final tglSales = data[index]
+                          final saleDates = tracking[index]
                               .salesDetail
                               ?.map((e) =>
                                   DateFormat("dd-Mm-yyyy").format(e.tanggal!))
@@ -120,7 +120,7 @@ class _TrackingPageState extends State<TrackingPage>
                                     .copyWith(dividerColor: Colors.transparent),
                                 child: ExpansionTile(
                                   title: Text(
-                                    data[index].delivery!,
+                                    tracking[index].delivery!,
                                     style: GoogleFonts.nunito(
                                       color: ColorConstants.fontColor,
                                       fontSize: 18.sp,
@@ -129,7 +129,7 @@ class _TrackingPageState extends State<TrackingPage>
                                   ),
                                   subtitle: Text(
                                     DateFormat("dd MMM yyyy")
-                                        .format(data[index].tglPosting!),
+                                        .format(tracking[index].tglPosting!),
                                     style: TextStyle(
                                       color: ColorConstants.fontColor,
                                       fontSize: 16.sp,
@@ -137,7 +137,7 @@ class _TrackingPageState extends State<TrackingPage>
                                     ),
                                   ),
                                   trailing: Text(
-                                    (data[index]
+                                    (tracking[index]
                                         .status
                                         .toString()
                                         .capitalizeSentence),
@@ -156,7 +156,7 @@ class _TrackingPageState extends State<TrackingPage>
                                       children: [
                                         const Text("• Sales yg dikirim"),
                                         const Spacer(),
-                                        Text("${tglSales?.length ?? 0} Hari")
+                                        Text("${saleDates?.length ?? 0} Hari")
                                       ],
                                     ),
                                     SizedBox(height: 5.h),
@@ -184,27 +184,28 @@ class _TrackingPageState extends State<TrackingPage>
                                       children: [
                                         const Spacer(),
                                         ButtonWidget(
-                                            size: Size(100.w, 46.h),
-                                            color: ColorConstants.viewColor,
-                                            onPressed: () {
-                                              context.pushNamed(
-                                                  AppRoute
-                                                      .collectionTrackingDetail
-                                                      .name,
-                                                  extra: data[index]);
-                                            },
-                                            label: Row(
-                                              children: [
-                                                const Icon(Icons.location_on),
-                                                SizedBox(width: 4.w),
-                                                const Text(
-                                                  "Detail",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                  ),
+                                          size: Size(100.w, 46.h),
+                                          color: ColorConstants.viewColor,
+                                          onPressed: () {
+                                            context.pushNamed(
+                                                AppRoute
+                                                    .collectionTrackingDetail
+                                                    .name,
+                                                extra: tracking[index]);
+                                          },
+                                          label: Row(
+                                            children: [
+                                              const Icon(Icons.location_on),
+                                              SizedBox(width: 4.w),
+                                              const Text(
+                                                "Detail",
+                                                style: TextStyle(
+                                                  color: Colors.white,
                                                 ),
-                                              ],
-                                            )),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -213,7 +214,7 @@ class _TrackingPageState extends State<TrackingPage>
                             ),
                           );
                         },
-                        childCount: data.length,
+                        childCount: tracking.length,
                       ),
                     ),
                   );

@@ -66,7 +66,9 @@ class _DetailTrackingPageState extends State<DetailTrackingPage>
                     }
                   },
                   builder: (context, state) {
-                    if (state.isLoading) {
+                    return state.maybeWhen(orElse: () {
+                      return const SliverToBoxAdapter();
+                    }, loading: () {
                       return SliverFillRemaining(
                         child: Center(
                           child: CircularProgressIndicator(
@@ -75,9 +77,7 @@ class _DetailTrackingPageState extends State<DetailTrackingPage>
                           ),
                         ),
                       );
-                    }
-
-                    if (state.isSuccess) {
+                    }, data: (detailData) {
                       return SliverList(
                         delegate: SliverChildListDelegate([
                           Padding(
@@ -91,7 +91,7 @@ class _DetailTrackingPageState extends State<DetailTrackingPage>
                           ),
                           Builder(
                             builder: (context) {
-                              final listData = state.data!.detailTracking ??
+                              final details = detailData.detailTracking ??
                                   <DetailDataTracking>[];
 
                               return Padding(
@@ -120,14 +120,14 @@ class _DetailTrackingPageState extends State<DetailTrackingPage>
                                       iconColor: ColorConstants.fontColor,
                                       collapsedIconColor:
                                           ColorConstants.fontColor,
-                                      children: listData.map((e) {
-                                        final index = listData.indexOf(e);
+                                      children: details.map((e) {
+                                        final index = details.indexOf(e);
                                         return TrackingTimeline(
                                           index: index,
-                                          length: listData.length,
+                                          length: details.length,
                                           isFirst: index == 0,
-                                          isLast: index == listData.length - 1,
-                                          tracking: listData[index],
+                                          isLast: index == details.length - 1,
+                                          tracking: details[index],
                                         );
                                       }).toList(),
                                     ),
@@ -138,9 +138,7 @@ class _DetailTrackingPageState extends State<DetailTrackingPage>
                           )
                         ]),
                       );
-                    }
-
-                    return const SliverToBoxAdapter();
+                    });
                   },
                 ),
               ],

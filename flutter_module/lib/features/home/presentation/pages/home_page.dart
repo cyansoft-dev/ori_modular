@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../store/presentation/cubit/timer_cubit.dart';
 import '/core/appstate/app_state.dart';
 import '/core/constants/color_constants.dart';
 import '/core/widget/app_sizer/app_sizer.dart';
@@ -32,7 +33,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  final ValueNotifier<int> _menuIndex = ValueNotifier(0);
+  final ValueNotifier<int> _menuIndexNotifier = ValueNotifier(0);
   DateTime? currentBackPressTime;
   final bool _locationIsError = false;
   late AnimationController _messageC;
@@ -42,6 +43,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
     context
       ..read<LocalMessageCubit>().getMessage()
+      ..read<TimerCubit>().startTime()
       ..read<StoreCubit>().getStore()
       ..read<MenuCubit>().getMenu();
     _messageC = BottomSheet.createAnimationController(this)
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage>
   @override
   void dispose() {
     _messageC.dispose();
-    _menuIndex.dispose();
+    _menuIndexNotifier.dispose();
     super.dispose();
   }
 
@@ -64,70 +66,76 @@ class _HomePageState extends State<HomePage>
       body: WillPopScope(
         onWillPop: () => onWillPop(context),
         child: MultiBlocListener(
-            listeners: [
-              BlocListener<StoreCubit, AppState<ListStore>>(
-                  listener: (context, state) {
+          listeners: [
+            BlocListener<StoreCubit, AppState<ListStore>>(
+              listener: (context, state) {
                 state.maybeWhen(
                   orElse: () => null,
-                  data: (result) {
+                  data: (dataStore) {
                     if (storeCrew != true) {
                       return;
                     }
 
-                    if (result.stores != null && result.stores!.isNotEmpty) {
-                      context
-                          .read<SelectedStoreCubit>()
-                          .setStore(result.stores!.first);
-                    } else {
+                    if (dataStore.stores == null || dataStore.stores!.isEmpty) {
                       showMessage(
                         context,
                         "Data toko kosong, Silahkan refresh halaman.",
                         controller: _messageC,
                         type: MessageType.error,
                       );
+                      return;
                     }
+
+                    context
+                        .read<SelectedStoreCubit>()
+                        .setStore(dataStore.stores!.first);
                   },
-                  error: (error) => showMessage(
+                  error: (failure) => showMessage(
                     context,
-                    error.errMessage,
+                    failure.errMessage,
                     controller: _messageC,
                     type: MessageType.error,
                   ),
                 );
-              }),
-              BlocListener<MenuCubit, AppState<Menu>>(
-                  listener: (context, state) {
+              },
+            ),
+            BlocListener<MenuCubit, AppState<Menu>>(
+              listener: (context, state) {
                 state.maybeWhen(
                   orElse: () => null,
-                  error: (error) => showMessage(
+                  error: (failure) => showMessage(
                     context,
-                    error.errMessage,
+                    failure.errMessage,
                     controller: _messageC,
                     type: MessageType.error,
                   ),
                 );
-              }),
-              BlocListener<ForegroundMessageCubit, AppState<List<Message>>>(
-                  listener: (context, state) {
+              },
+            ),
+            BlocListener<ForegroundMessageCubit, AppState<List<Message>>>(
+              listener: (context, state) {
                 state.maybeWhen(
                   orElse: () => null,
-                  error: (error) => showMessage(
+                  error: (failure) => showMessage(
                     context,
-                    error.errMessage,
+                    failure.errMessage,
                     controller: _messageC,
                     type: MessageType.error,
                   ),
                 );
-              }),
-            ],
-            child: RefreshIndicator(
-                onRefresh: () async {
-                  if (_locationIsError) context.read<LocationCubit>().start();
-                },
-                child: resultPage(storeCrew))),
+              },
+            ),
+          ],
+          child: RefreshIndicator(
+            onRefresh: () async {
+              if (_locationIsError) context.read<LocationCubit>().start();
+            },
+            child: resultPage(storeCrew),
+          ),
+        ),
       ),
       bottomNavigationBar: ValueListenableBuilder(
-        valueListenable: _menuIndex,
+        valueListenable: _menuIndexNotifier,
         builder: (context, index, child) {
           return NavigationBarTheme(
             data: Theme.of(context).navigationBarTheme.copyWith(
@@ -147,9 +155,9 @@ class _HomePageState extends State<HomePage>
                 ),
                 child: NavigationBar(
                   backgroundColor: Colors.white,
-                  selectedIndex: _menuIndex.value,
+                  selectedIndex: index,
                   onDestinationSelected: (index) {
-                    _menuIndex.value = index;
+                    _menuIndexNotifier.value = index;
                   },
                   destinations: [
                     NavigationDestination(
@@ -163,19 +171,6 @@ class _HomePageState extends State<HomePage>
                         color: ColorConstants.iconColor,
                       ),
                     ),
-                    /*
-                    NavigationDestination(
-                      icon: Icon(
-                        Iconsax.chart_2,
-                        color: ColorConstants.fontColor,
-                      ),
-                      label: "Report",
-                      selectedIcon: Icon(
-                        Iconsax.chart_2,
-                        color: ColorConstants.iconColor,
-                      ),
-                    ),
-                    */
                     NavigationDestination(
                       icon: Icon(
                         Iconsax.profile_circle,
@@ -199,7 +194,7 @@ class _HomePageState extends State<HomePage>
 
   Widget resultPage(bool? storeCrew) {
     return ValueListenableBuilder(
-      valueListenable: _menuIndex,
+      valueListenable: _menuIndexNotifier,
       builder: (context, index, child) {
         if (index == 1) {
           return const ProfilePage();

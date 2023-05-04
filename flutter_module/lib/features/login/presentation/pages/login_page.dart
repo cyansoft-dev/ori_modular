@@ -34,9 +34,9 @@ class _LoginPageState extends State<LoginPage>
   final double roundedValue = 30.w;
   final double formHeight = 550.h;
   final _formKey = GlobalKey<FormState>();
-  final ValueNotifier<String> _userC = ValueNotifier("");
-  final ValueNotifier<String> _passC = ValueNotifier("");
-  final ValueNotifier<bool> keyboardIsShown = ValueNotifier(false);
+  final ValueNotifier<String> _userNotifier = ValueNotifier("");
+  final ValueNotifier<String> _passwordNotifier = ValueNotifier("");
+  final ValueNotifier<bool> keyboardNotifier = ValueNotifier(false);
 
   @override
   void initState() {
@@ -50,18 +50,18 @@ class _LoginPageState extends State<LoginPage>
   void didChangeMetrics() {
     final value = WidgetsBinding.instance.window.viewInsets.bottom;
     if (value > 0) {
-      keyboardIsShown.value = true;
+      keyboardNotifier.value = true;
     } else {
-      keyboardIsShown.value = false;
+      keyboardNotifier.value = false;
     }
   }
 
   @override
   void dispose() {
-    _userC.dispose();
-    _passC.dispose();
+    _userNotifier.dispose();
+    _passwordNotifier.dispose();
     _messageC.dispose();
-    keyboardIsShown.dispose();
+    keyboardNotifier.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage>
         listener: (context, state) {
           state.maybeWhen(
             orElse: () => null,
-            data: (data) {
+            data: (userData) {
               context
                 ..read<SettingCubit>().getSetting()
                 ..pushReplacementNamed(AppRoute.home.name);
@@ -118,13 +118,13 @@ class _LoginPageState extends State<LoginPage>
                             errorMessage: "User id minimal 10 digit")
                       ]),
                       onChanged: (value) {
-                        _userC.value = value;
+                        _userNotifier.value = value;
                       },
                     ),
                     SizedBox(height: 24.h),
                     PassTextField(
                       onChanged: (value) {
-                        _passC.value = value;
+                        _passwordNotifier.value = value;
                       },
                     ),
                     SizedBox(height: 48.h),
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage>
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           context.read<AuthCubit>().loginFromNetwork(
-                              _userC.value, _passC.value, appInfo!);
+                              _userNotifier.value, _passwordNotifier.value, appInfo!);
                         }
                       },
                     ),
@@ -146,10 +146,10 @@ class _LoginPageState extends State<LoginPage>
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: ValueListenableBuilder<bool>(
-                      valueListenable: keyboardIsShown,
-                      builder: (context, isShown, child) {
+                      valueListenable: keyboardNotifier,
+                      builder: (context, isVisible, child) {
                         return Visibility(
-                          visible: !isShown,
+                          visible: !isVisible,
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Text(

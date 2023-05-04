@@ -55,7 +55,7 @@ class _TrackingProgressState extends State<TrackingProgress> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: listStatus.map((e) {
               final index = listStatus.indexOf(e);
-              final status = listStatus[index];
+              final status = e;
               final isFirst = index == 0;
               final isLast = index == listStatus.length - 1;
 

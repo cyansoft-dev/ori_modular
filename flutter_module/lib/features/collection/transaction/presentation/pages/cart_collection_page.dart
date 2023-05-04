@@ -112,7 +112,10 @@ class _CartCollectionPageState extends State<CartCollectionPage>
                           context
                             ..pop()
                             ..read<TransactionCollectionCubit>().truncate()
-                            ..read<DeliveryMasterCubit>().getData(store!);
+                            ..read<DeliveryMasterCubit>().getData(
+                              store!,
+                              widget.type.toString(),
+                            );
                         },
                       );
                     } else {

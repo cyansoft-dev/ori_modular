@@ -66,6 +66,7 @@ class SplashRepositoryImpl implements SplashRepository {
         isValid: true,
       );
 
+
       return Right(info);
     } catch (e) {
       return Left(Failure.fromException(e));

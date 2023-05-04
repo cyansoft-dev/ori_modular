@@ -32,7 +32,10 @@ class _NonKodelPageState extends State<NonKodelPage>
     super.initState();
     _messageC = BottomSheet.createAnimationController(this)
       ..duration = ValueConstants.animationDuration;
-    context.read<DeliveryMasterCubit>().getData(widget.store.kodetoko!);
+    context.read<DeliveryMasterCubit>().getData(
+          widget.store.kodetoko!,
+          TypeMenu.nonKodel.toString(),
+        );
   }
 
   @override
@@ -75,12 +78,12 @@ class _NonKodelPageState extends State<NonKodelPage>
                 }
               },
               builder: (context, state) {
-                final status = state.status;
+                final transactionStatus = state.status;
                 final showButton =
-                    (status.index <= TransactionStatus.setDate.index);
+                    (transactionStatus.index <= TransactionStatus.setDate.index);
 
                 return WillPopScope(
-                  onWillPop: () => onWillPop(context, status),
+                  onWillPop: () => onWillPop(context, transactionStatus),
                   child: Scaffold(
                     resizeToAvoidBottomInset: true,
                     body: NestedScrollView(
@@ -113,7 +116,7 @@ class _NonKodelPageState extends State<NonKodelPage>
                               ),
                               SliverFillRemaining(
                                 child: DataTransitionWidget(
-                                  status: status,
+                                  status: transactionStatus,
                                   type: TypeMenu.nonKodel,
                                   store: store,
                                 ),

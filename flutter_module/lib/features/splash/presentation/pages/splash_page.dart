@@ -50,10 +50,9 @@ class _SplashPageState extends State<SplashPage>
   late PushNotification _notification;
 
   PermissionStatus? _permission;
-
-  final ValueNotifier<bool> _isLoading = ValueNotifier(true);
+  final ValueNotifier<bool> _loadingNotifier = ValueNotifier(true);
   bool _isUpdate = true;
-  AppInfo _appInfo = const AppInfo();
+  final _appInfo = const AppInfo();
 
   @override
   void initState() {
@@ -94,7 +93,7 @@ class _SplashPageState extends State<SplashPage>
   void dispose() {
     _messageC.dispose();
     _animationC.dispose();
-    _isLoading.dispose();
+    _loadingNotifier.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -111,9 +110,8 @@ class _SplashPageState extends State<SplashPage>
                 listener: (context, state) {
                   state.maybeWhen(
                     orElse: () => null,
-                    loading: () => _isLoading.value = true,
-                    data: (data) {
-                      _appInfo = data;
+                    loading: () => _loadingNotifier.value = true,
+                    data: (appInfo) {
 
                       /// validating installer source
                       if (Platform.isAndroid && kReleaseMode && !isValid) {
@@ -123,12 +121,12 @@ class _SplashPageState extends State<SplashPage>
                           controller: _messageC,
                           type: MessageType.error,
                         ).whenComplete(() {
-                          _isLoading.value = false;
+                          _loadingNotifier.value = false;
                           forceClose();
                         });
                       }
 
-                      if (_appInfo.isRooted && kReleaseMode) {
+                      if (appInfo.isRooted && kReleaseMode) {
                         return showMessage(
                           context,
                           "Aplikasi tidak dapat berjalan pada rooted device.",
@@ -137,7 +135,7 @@ class _SplashPageState extends State<SplashPage>
                         ).then((_) => forceClose());
                       }
 
-                      if (_appInfo.isCloned) {
+                      if (appInfo.isCloned) {
                         return showMessage(
                           context,
                           "Aplikasi tidak dapat berjalan pada cloned app.",
@@ -149,7 +147,7 @@ class _SplashPageState extends State<SplashPage>
                       context.read<LocationPermissionCubit>().checkPermission();
                     },
                     error: (failure) {
-                      _isLoading.value = false;
+                      _loadingNotifier.value = false;
                       final message = failure.errMessage;
                       showDialogMessage(
                         context,
@@ -162,7 +160,7 @@ class _SplashPageState extends State<SplashPage>
                           context.read<AppInfoCubit>().getAppInfo();
                         },
                         onCancel: () {
-                          _isLoading.value = false;
+                          _loadingNotifier.value = false;
                           forceClose();
                         },
                       );
@@ -174,11 +172,10 @@ class _SplashPageState extends State<SplashPage>
                 listener: (context, state) {
                   state.maybeWhen(
                     orElse: () => null,
-                    loading: () => _isLoading.value = true,
-                    data: (data) async {
-                      _permission = data;
-                      if (data == PermissionStatus.denied) {
-                        _isLoading.value = false;
+                    loading: () => _loadingNotifier.value = true,
+                    data: (permission) async {
+                      if (permission == PermissionStatus.denied) {
+                        _loadingNotifier.value = false;
                         return showDialogMessage(
                           context,
                           "Service lokasi dibutuhkan untuk mengakses aplikasi ini.",
@@ -192,14 +189,14 @@ class _SplashPageState extends State<SplashPage>
                                 .checkPermission();
                           },
                           onCancel: () {
-                            _isLoading.value = false;
+                            _loadingNotifier.value = false;
                             forceClose();
                           },
                         );
                       }
 
-                      if (data == PermissionStatus.permanentlyDenied) {
-                        _isLoading.value = false;
+                      if (permission == PermissionStatus.permanentlyDenied) {
+                        _loadingNotifier.value = false;
                         return showDialogMessage(
                           context,
                           "Service lokasi tidak diijinkan permanent.",
@@ -211,18 +208,18 @@ class _SplashPageState extends State<SplashPage>
                             openAppSettings();
                           },
                           onCancel: () {
-                            _isLoading.value = false;
+                            _loadingNotifier.value = false;
                             forceClose();
                           },
                         );
                       }
 
-                      if (data == PermissionStatus.granted) {
+                      if (permission == PermissionStatus.granted) {
                         context.read<UpdaterCubit>().getUpdater();
                       }
                     },
                     error: (failure) {
-                      _isLoading.value = false;
+                      _loadingNotifier.value = false;
                       final message = failure.errMessage;
                       showDialogMessage(
                         context,
@@ -237,7 +234,7 @@ class _SplashPageState extends State<SplashPage>
                               .checkPermission();
                         },
                         onCancel: () {
-                          _isLoading.value = false;
+                          _loadingNotifier.value = false;
                           forceClose();
                         },
                       );
@@ -249,13 +246,12 @@ class _SplashPageState extends State<SplashPage>
                 listener: (context, state) {
                   state.maybeWhen(
                     orElse: () => null,
-                    loading: () => _isLoading.value = true,
-                    data: (data) {
-                      /*checkAppVersion(context, data);*/
-                      context.read<AuthCubit>().loginFromStorage();
+                    loading: () => _loadingNotifier.value = true,
+                    data: (updater) {
+                      checkAppVersion(context, updater);
                     },
                     error: (failure) {
-                      _isLoading.value = false;
+                      _loadingNotifier.value = false;
                       final message = failure.errMessage;
                       showDialogMessage(
                         context,
@@ -268,7 +264,7 @@ class _SplashPageState extends State<SplashPage>
                           context.read<UpdaterCubit>().getUpdater();
                         },
                         onCancel: () {
-                          _isLoading.value = false;
+                          _loadingNotifier.value = false;
                           forceClose();
                         },
                       );
@@ -280,14 +276,14 @@ class _SplashPageState extends State<SplashPage>
                 listener: (context, state) {
                   state.maybeWhen(
                     orElse: () => null,
-                    loading: () => _isLoading.value = true,
-                    data: (data) {
+                    loading: () => _loadingNotifier.value = true,
+                    data: (user) {
                       context
                         ..read<SettingCubit>().getSetting()
                         ..read<InitialMessageCubit>().getInitialMessage();
                     },
-                    error: (error) {
-                      _isLoading.value = false;
+                    error: (failure) {
+                      _loadingNotifier.value = false;
                       context.pushReplacementNamed(AppRoute.login.name);
                     },
                   );
@@ -297,14 +293,14 @@ class _SplashPageState extends State<SplashPage>
                   listener: (context, state) {
                 state.maybeWhen(
                     orElse: () => null,
-                    data: (data) {
-                      if (data.message != null) {
-                        _notification.show(data.message!);
+                    data: (msgData) {
+                      if (msgData.message != null) {
+                        _notification.show(msgData.message!);
                       }
                     },
-                    error: (error) => showMessage(
+                    error: (failure) => showMessage(
                           context,
-                          error.errMessage,
+                          failure.errMessage,
                           controller: _messageC,
                           type: MessageType.error,
                         ));
@@ -313,14 +309,14 @@ class _SplashPageState extends State<SplashPage>
                   listener: (context, state) {
                 state.maybeWhen(
                     orElse: () => null,
-                    data: (data) {
-                      if (data.isNotEmpty && data.last.message != null) {
-                        _notification.show(data.last.message!);
+                    data: (msgData) {
+                      if (msgData.isNotEmpty && msgData.last.message != null) {
+                        _notification.show(msgData.last.message!);
                       }
                     },
-                    error: (error) => showMessage(
+                    error: (failure) => showMessage(
                           context,
-                          error.errMessage,
+                          failure.errMessage,
                           controller: _messageC,
                           type: MessageType.error,
                         ));
@@ -329,12 +325,13 @@ class _SplashPageState extends State<SplashPage>
                 listener: (context, state) {
                   state.maybeWhen(
                     orElse: () => null,
-                    loading: () => _isLoading.value = true,
-                    data: (data) {
+                    loading: () => _loadingNotifier.value = true,
+                    data: (settingData) {
                       context.pushReplacementNamed(AppRoute.home.name);
                     },
                     error: (failure) {
-                      _isLoading.value = false;
+                      _loadingNotifier.value = false;
+
                       if (failure is AuthorizationFailure) {
                         context.pushReplacementNamed(AppRoute.login.name);
                       } else {
@@ -349,7 +346,7 @@ class _SplashPageState extends State<SplashPage>
                             context.read<SettingCubit>().getSetting();
                           },
                           onCancel: () {
-                            _isLoading.value = false;
+                            _loadingNotifier.value = false;
                             forceClose();
                           },
                         );
@@ -421,10 +418,10 @@ class _SplashPageState extends State<SplashPage>
                   child: Align(
                     alignment: Alignment.center,
                     child: ValueListenableBuilder<bool>(
-                      valueListenable: _isLoading,
-                      builder: (context, value, child) {
+                      valueListenable: _loadingNotifier,
+                      builder: (context, isLoading, child) {
                         return Visibility(
-                          visible: value,
+                          visible: isLoading,
                           child: CircularProgressIndicator(
                             strokeWidth: 3.w,
                             color: ColorConstants.backgroundColor,
@@ -466,8 +463,8 @@ class _SplashPageState extends State<SplashPage>
     /// Check versioning app
     final currentVersion = Version.parse(_appInfo.version ?? "1.0.0");
     final serverVersion = Version.parse(updater.number ?? "1.0.0");
-    final comparing = currentVersion.compareTo(serverVersion);
-    if (comparing < 0) {
+    final isUpdate = currentVersion.compareTo(serverVersion) < 0;
+    if (isUpdate) {
       return showDialogMessage(
         context,
         "Versi terbaru ORI Administrasi tersedia, \n Update sekarang ?",
@@ -480,7 +477,7 @@ class _SplashPageState extends State<SplashPage>
           startUpdate(context);
         },
         onCancel: () {
-          _isLoading.value = false;
+          _loadingNotifier.value = false;
           forceClose();
         },
       );

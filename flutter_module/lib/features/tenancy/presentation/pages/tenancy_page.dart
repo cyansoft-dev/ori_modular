@@ -15,17 +15,6 @@ import '../../../common/presentation/components/submenu_header_delegate.dart';
 import '../../../menu/domain/entities/menu.dart';
 import '/features/tenancy/presentation/cubit/master_tenant_cubit.dart';
 
-enum TenantStatus {
-  registered("TERDAFTAR"),
-  ilegal("TIDAK TERDAFTAR");
-
-  final String status;
-  const TenantStatus(this.status);
-
-  @override
-  String toString() => status;
-}
-
 class TenancyPage extends StatelessWidget {
   const TenancyPage({super.key, required this.store});
   final Store store;
@@ -142,4 +131,16 @@ class TenancyPage extends StatelessWidget {
       ),
     );
   }
+}
+
+
+enum TenantStatus {
+  registered("TERDAFTAR"),
+  ilegal("TIDAK TERDAFTAR");
+
+  final String status;
+  const TenantStatus(this.status);
+
+  @override
+  String toString() => status;
 }

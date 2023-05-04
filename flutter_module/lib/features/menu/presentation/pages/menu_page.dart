@@ -58,9 +58,8 @@ class _MenuPageState extends State<MenuPage>
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          if (storeState.isSuccess &&
-              (storeState.data!.stores == null ||
-                  storeState.data!.stores!.isEmpty)) {
+          if (storeState.data?.stores == null ||
+              storeState.data!.stores!.isEmpty) {
             context.read<StoreCubit>().getStore();
           }
           context.read<MenuCubit>().getMenu();
@@ -102,8 +101,26 @@ class _MenuPageState extends State<MenuPage>
               ),
               AppStateSliver<Menu>(
                 state: menuState,
-                onData: (Menu menu) {
-                  final main = menu.menuMain ?? <MenuData>[];
+                onData: (menuData) {
+                  final mainMenu = menuData.menuMain ?? <MenuData>[];
+                  if (mainMenu.isEmpty) {
+                    return SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Padding(
+                        padding: EdgeInsets.all(20.w),
+                        child: Center(
+                          child: Text(
+                            "Tarik halaman ke bawah untuk refresh",
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+
                   return SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       return Padding(
@@ -118,12 +135,13 @@ class _MenuPageState extends State<MenuPage>
                           child: InkWell(
                             borderRadius: BorderRadius.circular(
                                 ValueConstants.borderRadius),
-                            onTap: () async {
+                            onTap: () {
                               FocusManager.instance.primaryFocus?.unfocus();
 
-                              String path = main[index].path ?? "/";
+                              String path = mainMenu[index].path ?? "/";
                               context
-                                ..read<SelectedMenuCubit>().setMenu(main[index])
+                                ..read<SelectedMenuCubit>()
+                                    .setMenu(mainMenu[index])
                                 ..push(path, extra: selectedStore);
                             },
                             child: Padding(
@@ -140,7 +158,7 @@ class _MenuPageState extends State<MenuPage>
                                       borderRadius: BorderRadius.circular(15.w),
                                     ),
                                     child: Hero(
-                                      tag: "${main[index].title}",
+                                      tag: "${mainMenu[index].title}",
                                       child: Icon(
                                         Iconsax.menu_board,
                                         color: ColorConstants.iconColor,
@@ -157,7 +175,7 @@ class _MenuPageState extends State<MenuPage>
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${main[index].title}",
+                                          "${mainMenu[index].title}",
                                           style: GoogleFonts.nunito(
                                             fontSize: 18.sp,
                                             fontWeight: FontWeight.w500,
@@ -165,7 +183,7 @@ class _MenuPageState extends State<MenuPage>
                                         ),
                                         SizedBox(width: 4.h),
                                         Text(
-                                          "${main[index].subtitle}",
+                                          "${mainMenu[index].subtitle}",
                                           style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
@@ -182,7 +200,7 @@ class _MenuPageState extends State<MenuPage>
                           ),
                         ),
                       );
-                    }, childCount: main.length),
+                    }, childCount: mainMenu.length),
                   );
                 },
               ),

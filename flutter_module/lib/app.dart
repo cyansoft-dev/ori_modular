@@ -7,7 +7,6 @@ import 'core/di/injector.dart';
 import 'core/widget/app_sizer/app_sizer.dart';
 import 'core/widget/transition_builder.dart';
 import 'features/collection/menu/presentation/cubit/delivery_master_cubit.dart';
-import 'features/collection/menu/presentation/cubit/master_collect_cubit.dart';
 import 'features/collection/tracking/presentation/cubit/tracking_cubit.dart';
 import 'features/collection/transaction/presentation/cubit/temp_master_collection_cubit.dart';
 import 'features/collection/transaction/presentation/cubit/transaction_collection_cubit.dart';
@@ -76,9 +75,6 @@ class App extends StatelessWidget {
         ),
         BlocProvider<LogoutCubit>(
           create: (context) => locator.get<LogoutCubit>(),
-        ),
-        BlocProvider<MasterCollectCubit>(
-          create: (context) => locator.get<MasterCollectCubit>(),
         ),
         BlocProvider<DeliveryMasterCubit>(
           create: (context) => locator.get<DeliveryMasterCubit>(),

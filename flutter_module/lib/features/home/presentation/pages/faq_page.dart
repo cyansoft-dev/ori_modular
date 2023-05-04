@@ -21,7 +21,6 @@ class FaqPage extends StatefulWidget {
 }
 
 class _FaqPageState extends State<FaqPage> with SingleTickerProviderStateMixin {
-  ValueNotifier<List<FaqData>> listData = ValueNotifier([]);
   late AnimationController _messageC;
 
   @override
@@ -55,25 +54,24 @@ class _FaqPageState extends State<FaqPage> with SingleTickerProviderStateMixin {
                 ),
                 BlocConsumer<FaqCubit, AppState<List<FaqData>>>(
                   listener: (context, state) {
-                    if (state.isSuccess) {
-                      listData.value = [...?state.data];
-                    }
-
-                    if (state.isError) {
-                      showDialogMessage(
-                        context,
-                        "${state.error?.errMessage}",
-                        controller: _messageC,
-                        processLabel: "Reload",
-                        cancelLabel: "Later",
-                        onProcess: () => context.read<FaqCubit>().getFaq(),
-                      );
-                    }
+                    state.maybeWhen(
+                      orElse: () => null,
+                      error: (failure) {
+                        showDialogMessage(
+                          context,
+                          failure.errMessage,
+                          controller: _messageC,
+                          processLabel: "Reload",
+                          cancelLabel: "Later",
+                          onProcess: () => context.read<FaqCubit>().getFaq(),
+                        );
+                      },
+                    );
                   },
                   builder: (context, state) {
                     return AppStateSliver(
                       state: state,
-                      onData: (data) {
+                      onData: (faqData) {
                         return SliverPadding(
                           padding: EdgeInsets.all(20.w),
                           sliver: SliverList(
@@ -90,7 +88,7 @@ class _FaqPageState extends State<FaqPage> with SingleTickerProviderStateMixin {
                                       horizontalTitleGap: 0,
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 10.h, horizontal: 15.w),
-                                      title: Text("${data[index].question}"),
+                                      title: Text("${faqData[index].question}"),
                                       trailing: Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         size: 20.sp,
@@ -99,15 +97,15 @@ class _FaqPageState extends State<FaqPage> with SingleTickerProviderStateMixin {
                                         showQuestionMessage(
                                           context,
                                           controller: _messageC,
-                                          question: data[index].question,
-                                          answer: data[index].answer,
+                                          question: faqData[index].question,
+                                          answer: faqData[index].answer,
                                         );
                                       },
                                     ),
                                   ),
                                 );
                               },
-                              childCount: data.length,
+                              childCount: faqData.length,
                             ),
                           ),
                         );

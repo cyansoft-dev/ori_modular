@@ -25,10 +25,11 @@ class CollectionRepositoryImpl implements CollectionRepository {
 
   @override
   Future<Either<Failure, DeliveryMaster>> getCollectMaster(
-      String kodeToko) async {
+      String kodeToko, String typeMenu) async {
     if (await _checker.status == ConnectionStatus.connected) {
       try {
-        final data = await _remoteDataSource.getMasterCollection(kodeToko);
+        final data =
+            await _remoteDataSource.getMasterCollection(kodeToko, typeMenu);
         final result = await compute<DeliveryMasterModel, DeliveryMaster>(
             deliveryMasterFromModel, data);
 

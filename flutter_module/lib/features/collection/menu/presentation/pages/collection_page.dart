@@ -7,7 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import '/core/constants/color_constants.dart';
 import '/core/constants/value_constants.dart';
 import '/core/widget/app_sizer/app_sizer.dart';
-import '../../../../../core/widget/gradient_icon.dart';
+import '/core/widget/gradient_icon.dart';
 import '../../../../common/presentation/components/submenu_header_delegate.dart';
 import '../../../../common/presentation/cubit/selected_submenu_cubit.dart';
 import '../../../../menu/domain/entities/menu.dart';

@@ -19,8 +19,8 @@ class StorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double expandedHeight = 396.xh;
-    double collapseHeight = 256.xh;
+    final double expandedHeight = 396.xh;
+    final double collapseHeight = 256.xh;
     final state = context.select((StoreCubit cubit) => cubit.state);
 
     return Scaffold(
@@ -49,8 +49,26 @@ class StorePage extends StatelessWidget {
             ),
           AppStateSliver<ListStore>(
             state: state,
-            onData: (ListStore data) {
-              final stores = data.stores ?? <Store>[];
+            onData: (dataStore) {
+              final stores = dataStore.stores ?? <Store>[];
+              if (stores.isEmpty) {
+                return SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: EdgeInsets.all(20.w),
+                    child: Center(
+                      child: Text(
+                        "Tarik halaman ke bawah untuk refresh",
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+
               return SliverPadding(
                 padding: EdgeInsets.all(20.w),
                 sliver: SliverGrid.builder(

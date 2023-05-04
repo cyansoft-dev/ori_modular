@@ -5,7 +5,8 @@ import '../../../../../../core/dio/dio.dart';
 import '../../model/delivery_master_model.dart';
 
 abstract class CollectionRemoteDataSource {
-  Future<DeliveryMasterModel> getMasterCollection(String kodeToko);
+  Future<DeliveryMasterModel> getMasterCollection(
+      String kodeToko, String typeMenu);
 }
 
 @Named("collectionRemoteDataSource")
@@ -15,8 +16,12 @@ class CollectionRemoteDataSourceImpl implements CollectionRemoteDataSource {
   CollectionRemoteDataSourceImpl(this._client);
 
   @override
-  Future<DeliveryMasterModel> getMasterCollection(String kodeToko) async {
-    final params = {"kdtk": kodeToko};
+  Future<DeliveryMasterModel> getMasterCollection(
+      String kodeToko, String typeMenu) async {
+    final params = {
+      "kdtk": kodeToko,
+      "type": typeMenu,
+    };
     final response = await _client.post(
       "/collection/delivery_master",
       data: params,

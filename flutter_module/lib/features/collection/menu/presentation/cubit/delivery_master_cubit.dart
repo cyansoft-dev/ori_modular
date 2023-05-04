@@ -15,9 +15,10 @@ class DeliveryMasterCubit extends Cubit<AppState<DeliveryMaster>> {
 
   late DeliveryMaster _master;
 
-  Future<void> getData(String kodeToko) async {
+  Future<void> getData(String kodeToko, String typeMenu) async {
     emit(const AppState.loading());
-    final result = await _useCase.call(kodeToko);
+    final params = CollectMasterParam(kodeToko, typeMenu);
+    final result = await _useCase.call(params);
 
     result.fold((failure) => emit(AppState.error(failure)), (data) async {
       _master = data;

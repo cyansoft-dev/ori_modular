@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../cubit/timer_cubit.dart';
 import '/core/appstate/app_state.dart';
 import '/core/constants/color_constants.dart';
 import '/core/widget/app_sizer/app_sizer.dart';
@@ -42,235 +44,212 @@ class StoreHeaderDelegate extends SliverPersistentHeaderDelegate {
     double progress = shrinkOffset / (maxExtent - minExtent);
     double percent = min(1, progress);
 
-    return BlocBuilder<AuthCubit, AppState<User>>(
-      builder: (context, state) {
-        return AppStatePage(
-          state: state,
-          onData: (user) {
-            return Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ColorConstants.backgroundColor,
-                      gradient: LinearGradient(
-                        colors: ColorConstants.gradientColors,
-                        begin: Alignment.topLeft,
-                        end: Alignment.topRight,
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              color: ColorConstants.backgroundColor,
+              gradient: LinearGradient(
+                colors: ColorConstants.gradientColors,
+                begin: Alignment.topLeft,
+                end: Alignment.topRight,
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+            top: 30.h,
+            left: 20.w,
+            right: 20.w,
+            child: SafeArea(
+                child: IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "ORI",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26.sp,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        "Administration",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(AppRoute.notification.name);
+                    },
+                    child: Container(
+                      height: 42.w,
+                      width: 42.w,
+                      decoration: BoxDecoration(
+                          color: ColorConstants.shadowColor.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10.w)),
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Center(
+                            child: Icon(
+                              Iconsax.notification,
+                              color: Colors.white,
+                              size: 26.sp,
+                            ),
+                          ),
+                          Positioned(
+                            top: -5.w,
+                            right: -5.w,
+                            child: BlocBuilder<LocalMessageCubit,
+                                AppState<List<Message>>>(
+                              builder: (context, state) {
+                                return AppStatePage<List<Message>>(
+                                  state: state,
+                                  onData: (remote) {
+                                    final counter = remote
+                                        .where((e) => e.isRead == false)
+                                        .length;
+
+                                    if (counter == 0) {
+                                      return const SizedBox.shrink();
+                                    }
+
+                                    return Container(
+                                      height: 25.w,
+                                      width: 25.w,
+                                      padding: EdgeInsets.all(3.w),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: ColorConstants.badgeColor),
+                                      child: Center(
+                                        child: Text(
+                                          "$counter",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: ColorConstants.fontColor,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    // child: Image.asset(
-                    //   ImageConstants.banner,
-                    //   fit: BoxFit.cover,
-                    // ),
                   ),
-                ),
-                Positioned(
-                    top: 30.h,
-                    left: 20.w,
-                    right: 20.w,
-                    child: SafeArea(
-                        child: IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
+                ],
+              ),
+            ))),
+        Positioned(
+          top: 150.xh,
+          left: 20.w,
+          right: 20.w,
+          child: AnimatedOpacity(
+            opacity: 1 - percent,
+            duration: const Duration(milliseconds: 300),
+            child: Container(
+              height: 120.h,
+              padding: EdgeInsets.symmetric(vertical: 15.w, horizontal: 15.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.h),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 80.h,
+                    height: 80.h,
+                    padding: EdgeInsets.all(10.w),
+                    decoration: BoxDecoration(
+                      color: ColorConstants.avatarColor,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(15.w),
+                    ),
+                    child: Center(child: iconTime()),
+                  ),
+                  SizedBox(width: 10.w),
+                  Flexible(
+                    child: BlocBuilder<AuthCubit, AppState<User>>(
+                      builder: (context, state) {
+                        return AppStatePage(
+                          state: state,
+                          onData: (user) => Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              greetingText(),
+                              /*SizedBox(height: 4.h),*/
                               Text(
-                                "ORI",
+                                user.namalengkap?.capitalizeSentence ?? "-",
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 26.sp,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                "Administration",
-                                style: TextStyle(
-                                  color: Colors.white,
                                   fontSize: 20.sp,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 1,
+                                  fontWeight: FontWeight.w300,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.grey.shade600,
                                 ),
-                              ),
+                              )
                             ],
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              context.pushNamed(AppRoute.notification.name);
-                            },
-                            child: Container(
-                              height: 42.w,
-                              width: 42.w,
-                              decoration: BoxDecoration(
-                                  color: ColorConstants.shadowColor
-                                      .withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(10.w)),
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Center(
-                                    child: Icon(
-                                      Iconsax.notification,
-                                      color: Colors.white,
-                                      size: 26.sp,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: -5.w,
-                                    right: -5.w,
-                                    child: BlocBuilder<LocalMessageCubit,
-                                        AppState<List<Message>>>(
-                                      builder: (context, state) {
-                                        return AppStatePage<List<Message>>(
-                                          state: state,
-                                          onData: (remote) {
-                                            final counter = remote
-                                                .where((e) => e.isRead == false)
-                                                .length;
-
-                                            if (counter == 0) {
-                                              return const SizedBox.shrink();
-                                            }
-
-                                            return Container(
-                                              height: 25.w,
-                                              width: 25.w,
-                                              padding: EdgeInsets.all(3.w),
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: ColorConstants
-                                                      .badgeColor),
-                                              child: Center(
-                                                child: Text(
-                                                  "$counter",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: ColorConstants
-                                                        .fontColor,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ))),
-                Positioned(
-                    top: 150.xh,
-                    left: 20.w,
-                    right: 20.w,
-                    child: AnimatedOpacity(
-                      opacity: 1 - percent,
-                      duration: const Duration(milliseconds: 300),
-                      child: Container(
-                        height: 120.h,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 15.w, horizontal: 15.w),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.h),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 80.h,
-                              height: 80.h,
-                              padding: EdgeInsets.all(10.w),
-                              decoration: BoxDecoration(
-                                color: ColorConstants.avatarColor,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(15.w),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  iconData,
-                                  color: ColorConstants.iconColor,
-                                  size: 42.sp,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10.w),
-                            Flexible(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    greeting,
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 24.sp,
-                                      fontWeight: FontWeight.bold,
-                                      // letterSpacing: 1,
-                                    ),
-                                  ),
-                                  /*SizedBox(height: 4.h),*/
-                                  Text(
-                                    user.namalengkap?.capitalizeSentence ?? "-",
-                                    style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w300,
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )),
-                Positioned(
-                  bottom: 50.h,
-                  left: 20.w,
-                  right: 20.w,
-                  child: SearchTextField(
-                    hintText: isStoreCrew
-                        ? "Search menu here"
-                        : "Search store code here",
-                    onChanged: (value) {
-                      if (isStoreCrew) {
-                        context.read<MenuCubit>().searchMenu(value);
-                      } else {
-                        context.read<StoreCubit>().searchStore(value);
-                      }
-                    },
-                  ),
-                ),
-                Positioned(
-                  bottom: -1.h,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: 31.h,
-                    decoration: BoxDecoration(
-                      color: ColorConstants.canvasColor,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30.w),
-                          topRight: Radius.circular(30.w)),
+                        );
+                      },
                     ),
                   ),
-                ),
-              ],
-            );
-          },
-        );
-      },
+                ],
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 50.h,
+          left: 20.w,
+          right: 20.w,
+          child: SearchTextField(
+            hintText:
+                isStoreCrew ? "Search menu here" : "Search store code here",
+            onChanged: (value) {
+              if (isStoreCrew) {
+                context.read<MenuCubit>().searchMenu(value);
+              } else {
+                context.read<StoreCubit>().searchStore(value);
+              }
+            },
+          ),
+        ),
+        Positioned(
+          bottom: -1.h,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 31.h,
+            decoration: BoxDecoration(
+              color: ColorConstants.canvasColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.w),
+                  topRight: Radius.circular(30.w)),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -285,47 +264,57 @@ class StoreHeaderDelegate extends SliverPersistentHeaderDelegate {
     return true;
   }
 
-  IconData get iconData {
-    final jam = DateTime.now().hour;
+  Widget iconTime() {
+    return BlocBuilder<TimerCubit, TimeSharing>(
+      buildWhen: (prev, next) => prev.index != next.index,
+      builder: (context, time) {
+        late IconData iconData;
+        switch (time) {
+          case TimeSharing.PAGI:
+            iconData = CupertinoIcons.cloud_sun;
+            break;
 
-    if (jam >= 4 && jam < 10) {
-      return CupertinoIcons.cloud_sun;
-    }
+          case TimeSharing.SIANG:
+            iconData = CupertinoIcons.brightness;
+            break;
 
-    if (jam >= 10 && jam < 15) {
-      return CupertinoIcons.brightness;
-    }
+          case TimeSharing.SORE:
+            iconData = CupertinoIcons.cloud_sun;
+            break;
 
-    if (jam >= 15 && jam < 17) {
-      return CupertinoIcons.cloud_sun;
-    }
+          case TimeSharing.PETANG:
+            iconData = CupertinoIcons.cloud_moon;
+            break;
 
-    if (jam >= 17 && jam < 19) {
-      return CupertinoIcons.cloud_moon;
-    }
+          default:
+            iconData = CupertinoIcons.moon_stars;
+            break;
+        }
 
-    return CupertinoIcons.moon_stars;
+        return Icon(
+          iconData,
+          color: ColorConstants.iconColor,
+          size: 42.sp,
+        );
+      },
+    );
   }
 
-  String get greeting {
-    final jam = DateTime.now().hour;
+  Widget greetingText() {
+    return BlocBuilder<TimerCubit, TimeSharing>(
+      buildWhen: (prev, next) => prev.index != next.index,
+      builder: (context, time) {
+        String greeting = "SELAMAT ${time.toString()}";
 
-    if (jam >= 4 && jam < 10) {
-      return "SELAMAT PAGI";
-    }
-
-    if (jam >= 10 && jam < 15) {
-      return "SELAMAT SIANG";
-    }
-
-    if (jam >= 15 && jam < 17) {
-      return "SELAMAT SORE";
-    }
-
-    if (jam >= 17 && jam < 19) {
-      return "SELAMAT PETANG";
-    }
-
-    return "SELAMAT MALAM";
+        return Text(
+          greeting,
+          style: GoogleFonts.nunito(
+            fontSize: 24.sp,
+            fontWeight: FontWeight.bold,
+            // letterSpacing: 1,
+          ),
+        );
+      },
+    );
   }
 }

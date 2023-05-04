@@ -66,8 +66,8 @@ class _ProfilePageState extends State<ProfilePage>
         listener: (context, state) {
           state.maybeWhen(
             orElse: () => null,
-            data: (data) {
-              if (data) {
+            data: (isLogout) {
+              if (isLogout) {
                 context.goNamed(AppRoute.login.name);
               }
             },

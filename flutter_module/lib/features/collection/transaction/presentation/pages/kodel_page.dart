@@ -33,7 +33,7 @@ class _KodelPageState extends State<KodelPage>
       ..duration = ValueConstants.animationDuration;
     context
         .read<DeliveryMasterCubit>()
-        .getData(widget.store.kodetoko!);
+        .getData(widget.store.kodetoko!, TypeMenu.kodel.toString());
   }
 
   @override
@@ -60,12 +60,12 @@ class _KodelPageState extends State<KodelPage>
               }
             },
             builder: (context, state) {
-              final status = state.status;
+              final transactionStatus = state.status;
               final showButton =
-                  (status.index <= TransactionStatus.setDate.index);
+                  (transactionStatus.index <= TransactionStatus.setDate.index);
 
               return WillPopScope(
-                onWillPop: () => onWillPop(context, status),
+                onWillPop: () => onWillPop(context, transactionStatus),
                 child: Scaffold(
                   resizeToAvoidBottomInset: true,
                   body: NestedScrollView(
@@ -98,7 +98,7 @@ class _KodelPageState extends State<KodelPage>
                             ),
                             SliverFillRemaining(
                               child: DataTransitionWidget(
-                                status: status,
+                                status: transactionStatus,
                                 type: TypeMenu.kodel,
                                 store: store,
                               ),

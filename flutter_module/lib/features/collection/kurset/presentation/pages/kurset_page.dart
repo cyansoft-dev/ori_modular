@@ -68,18 +68,17 @@ class _KursetPageState extends State<KursetPage>
                 slivers: [
                   SliverPersistentHeader(
                       pinned: true, delegate: KursetHeaderDelegate()),
-                  
-                  AppStateSliver(
+                  AppStateSliver<List<Kurset>>(
                     state: state,
-                    onData: (data) {
-                      if (data.isEmpty) {
+                    onData: (kursets) {
+                      if (kursets.isEmpty) {
                         return SliverFillRemaining(
                           hasScrollBody: false,
                           child: Padding(
                             padding: EdgeInsets.all(20.w),
                             child: Center(
                                 child: Text(
-                              "Data kurang setor kosong.",
+                              "Data kurang setor toko kosong.",
                               style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w300,
@@ -121,7 +120,10 @@ class _KursetPageState extends State<KursetPage>
                                             fontWeight: FontWeight.bold),
                                       ),
                                       subtitle: Text(
-                                        data[index].tanggal == null ? "-" : DateFormat("dd MMM yyyy").format(data[index].tanggal!),
+                                        kursets[index].tanggal == null
+                                            ? "-"
+                                            : DateFormat("dd MMM yyyy").format(
+                                                kursets[index].tanggal!),
                                         style: GoogleFonts.nunito(
                                             color: Colors.grey.shade600,
                                             fontSize: 18.sp,
@@ -136,13 +138,13 @@ class _KursetPageState extends State<KursetPage>
                                       expandedAlignment: Alignment.topLeft,
                                       children: [
                                         Text(
-                                          "Nominal : ${data[index].nominal.toCurrencyFormat}",
+                                          "Nominal : ${kursets[index].nominal.toCurrencyFormat}",
                                           style: TextStyle(
                                               color: ColorConstants.fontColor,
                                               fontWeight: FontWeight.w500),
                                         ),
                                         Text(
-                                          "${data[index].keterangan?.capitalize}",
+                                          "${kursets[index].keterangan?.capitalize}",
                                           style: TextStyle(
                                               color: ColorConstants.fontColor,
                                               fontWeight: FontWeight.w500),
@@ -153,7 +155,7 @@ class _KursetPageState extends State<KursetPage>
                                 ),
                               );
                             },
-                            childCount: data.length,
+                            childCount: kursets.length,
                           ),
                         ),
                       );
