@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">android_modular</string>
+    <string name="title_activity_flutter_application">FlutterApplication</string>
+</resources>

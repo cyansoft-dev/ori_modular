@@ -1,0 +1,85 @@
+{
+  "code": 200,
+  "message": "Berhasil mengambil master",
+  "kdtk": "F1LS",
+  "data_master": {
+    "delivery_info": [
+      {
+        "jenis": "TASK FORCE",
+        "id": "TSK-F1LS-20221115",
+        "driver": "",
+        "nopol": "",
+        "estimasi": "2022-11-15 08:10:00"
+      },
+      {
+        "jenis": "KODEL",
+        "id": "KDL-F1LS-20221115",
+        "driver": "",
+        "nopol": "",
+        "estimasi": "2022-11-15 08:10:00"
+      }
+    ],
+    "sales_date": [
+      {
+        "tanggal": "2022-11-06",
+        "setoran": "ALL",
+        "shift": []
+      },
+      {
+        "tanggal": "2022-11-07",
+        "setoran": "ALL",
+        "shift": []
+      },
+      {
+        "tanggal": "2022-11-10",
+        "setoran": "ALL",
+        "shift": []
+      },
+      {
+        "tanggal": "2022-11-13",
+        "setoran": "ALL",
+        "shift": []
+      },
+      {
+        "tanggal": "2022-11-14",
+        "setoran": "ALL",
+        "shift": []
+      },
+      {
+        "tanggal": "2022-11-15",
+        "setoran": "PERSHIFT",
+        "shift": ["SHIFT 1", "SHIFT 2"]
+      }
+    ],
+    "sender_info": [
+      {
+        "id": "ATM-TIMX-20221115",
+        "name": "ATM 360"
+      },
+      {
+        "id": "CRM-TIMX-20221115",
+        "name": "CRM"
+      },
+      {
+        "id": "STN-TIMX-20221115",
+        "name": "SETORAN TUNAI"
+      }
+    ],
+    "master_bst": [
+      {
+        "id": 1,
+        "label": "TOTAL SETORAN",
+        "nominal": 0,
+        "need_desc": false,
+        "keterangan": ""
+      },
+      {
+        "id": 2,
+        "label": "POTONGAN RRAK",
+        "nominal": 0,
+        "need_desc": true,
+        "keterangan": ""
+      }
+    ]
+  }
+}

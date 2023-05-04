@@ -1,0 +1,40 @@
+{
+  "code": 200,
+  "message": "sukses",
+  "id_delivery": "TSK-TIMX-221129",
+  "lampiran": 3,
+  "detail_lampiran": [
+    {
+      "label": "lampiran 1",
+      "nominal": 1250000,
+      "imageUrl": "https://google.com/images/"
+    },
+    {
+      "label": "lampiran 2",
+      "nominal": 1250000,
+      "imageUrl": "https://google.com/images/"
+    },
+    {
+      "label": "lampiran 3",
+      "nominal": 1250000,
+      "imageUrl": "https://google.com/images/"
+    }
+  ],
+  "tracking": [
+    {
+      "status": "ON PROCESS",
+      "keterangan": "DITERIMA KASIR FINANCE [ YUSUF ]",
+      "update_at": "2022-12-01 09:00:00"
+    },
+    {
+      "status": "ON PROCESS",
+      "keterangan": "PROSES HITUNG SALES OLEH KASIR FINANCE [ YUSUF ]",
+      "update_at": "2022-12-01 12:00:00"
+    },
+    {
+      "status": "ON PROCESS",
+      "keterangan": "PROSES BBT OLEH FINANCE [ ALAN ]",
+      "update_at": "2022-12-01 15:00:00"
+    }
+  ]
+}

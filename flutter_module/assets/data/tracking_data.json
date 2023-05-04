@@ -1,0 +1,46 @@
+{
+    "code":200,
+    "message": "sukses",
+    "data":[
+        {
+            "type": "KODEL",
+            "delivery": "TASKFORCE",
+            "id_delivery": "TSK-TIMX-221129",
+            "tgl_posting": "2022-11-30 13:24:00",
+            "status": "SENDING",
+            "update_at": "2022-12-01 13:24:00",
+            "sales": [
+                {
+                    "tanggal": "2022-11-29 00:00:00",
+                    "lampiran": 1,
+                    "nominal": 1200000
+                },
+                {
+                    "tanggal": "2022-11-30 00:00:00",
+                    "lampiran": 2,
+                    "nominal": 1200000
+                }
+            ]
+        },
+        {
+            "type": "NONKODEL",
+            "delivery": "VENDOR",
+            "id_delivery": "VDR-TIMX-221129",
+            "tgl_posting": "2022-12-01 13:24:00",
+            "status": "ON PROCESS",
+            "update_at": "2022-12-01 15:30:00",
+            "sales": [
+                {
+                    "tanggal": "2022-11-29 00:00:00",
+                    "lampiran": 1,
+                    "nominal": 1200000
+                },
+                {
+                    "tanggal": "2022-11-30 00:00:00",
+                    "lampiran": 2,
+                    "nominal": 1200000
+                }
+            ]
+        }
+    ]
+}

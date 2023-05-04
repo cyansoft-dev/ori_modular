@@ -1,0 +1,678 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:8232934843087415227",
+      "lastPropertyId": "8:6588139351248176697",
+      "name": "DetailTransactionDto",
+      "properties": [
+        {
+          "id": "1:3395331390111786939",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "3:3848984618137707205",
+          "name": "nominal",
+          "type": 8
+        },
+        {
+          "id": "4:6511166198000238123",
+          "name": "pathImage",
+          "type": 9
+        },
+        {
+          "id": "5:5530067015116549700",
+          "name": "image",
+          "type": 23
+        },
+        {
+          "id": "6:3761917964990927980",
+          "name": "transactionId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:6266388702486732304",
+          "relationTarget": "DataCollectionDto"
+        },
+        {
+          "id": "8:6588139351248176697",
+          "name": "seqno",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:1842260362515623149",
+      "lastPropertyId": "7:7083391253296304502",
+      "name": "SummaryTransactionDto",
+      "properties": [
+        {
+          "id": "1:6383739157828242629",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "3:3409477007284999447",
+          "name": "label",
+          "type": 9
+        },
+        {
+          "id": "4:6151473281301365941",
+          "name": "nominal",
+          "type": 8
+        },
+        {
+          "id": "5:332924733206702891",
+          "name": "transactionId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:8221825114282649922",
+          "relationTarget": "DataCollectionDto"
+        },
+        {
+          "id": "6:1788988726938989309",
+          "name": "seqno",
+          "type": 6
+        },
+        {
+          "id": "7:7083391253296304502",
+          "name": "description",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:2569026409322168770",
+      "lastPropertyId": "11:2400611583415660282",
+      "name": "UserDto",
+      "properties": [
+        {
+          "id": "1:1179167173467332850",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "3:3845111968201020048",
+          "name": "username",
+          "type": 9
+        },
+        {
+          "id": "4:4481262761564268352",
+          "name": "namalengkap",
+          "type": 9
+        },
+        {
+          "id": "5:1522247215522370364",
+          "name": "kodecabang",
+          "type": 9
+        },
+        {
+          "id": "6:49762497978402097",
+          "name": "namacabang",
+          "type": 9
+        },
+        {
+          "id": "7:1031636458380791893",
+          "name": "token",
+          "type": 9
+        },
+        {
+          "id": "8:562722520916765807",
+          "name": "refreshToken",
+          "type": 9
+        },
+        {
+          "id": "9:5417131353531643549",
+          "name": "jabatan",
+          "type": 9
+        },
+        {
+          "id": "10:1881216648018816675",
+          "name": "departement",
+          "type": 9
+        },
+        {
+          "id": "11:2400611583415660282",
+          "name": "isStore",
+          "type": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "7:4946845259824490704",
+      "lastPropertyId": "6:3600934362607290533",
+      "name": "MessageDto",
+      "properties": [
+        {
+          "id": "1:7158886909019689042",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "5:4810042801894220045",
+          "name": "read",
+          "type": 1
+        },
+        {
+          "id": "6:3600934362607290533",
+          "name": "data",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "8:3295395790346718037",
+      "lastPropertyId": "11:1419789978375143412",
+      "name": "MasterOpnameDto",
+      "properties": [
+        {
+          "id": "1:2959126407752609358",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4270645578334843494",
+          "name": "tanggal",
+          "type": 10
+        },
+        {
+          "id": "6:8024530356607160363",
+          "name": "notaRrak",
+          "type": 8
+        },
+        {
+          "id": "8:5392116197479866865",
+          "name": "toko",
+          "type": 9
+        },
+        {
+          "id": "10:8631647896218025935",
+          "name": "danaKas",
+          "type": 8
+        },
+        {
+          "id": "11:1419789978375143412",
+          "name": "salesCurrent",
+          "type": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "10:5148506624434846070",
+      "lastPropertyId": "15:1428229243670574260",
+      "name": "DataTenantDto",
+      "properties": [
+        {
+          "id": "1:2822127776308409350",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4491110117835658602",
+          "name": "kdtk",
+          "type": 9
+        },
+        {
+          "id": "3:381555043939399024",
+          "name": "noPsm",
+          "type": 9
+        },
+        {
+          "id": "4:2930221228894779304",
+          "name": "status",
+          "type": 9
+        },
+        {
+          "id": "5:6733564413761653092",
+          "name": "tenantImage",
+          "type": 23
+        },
+        {
+          "id": "6:2039797553399150558",
+          "name": "storeImage",
+          "type": 23
+        },
+        {
+          "id": "9:1084105644413112342",
+          "name": "isActive",
+          "type": 1
+        },
+        {
+          "id": "10:502573371921611048",
+          "name": "addTime",
+          "type": 10
+        },
+        {
+          "id": "11:5956847030483882154",
+          "name": "tenantPath",
+          "type": 9
+        },
+        {
+          "id": "12:1910761793685237781",
+          "name": "storePath",
+          "type": 9
+        },
+        {
+          "id": "13:6737847573493047650",
+          "name": "jenisProduk",
+          "type": 9
+        },
+        {
+          "id": "14:3886220415073590274",
+          "name": "latitude",
+          "type": 8
+        },
+        {
+          "id": "15:1428229243670574260",
+          "name": "longitude",
+          "type": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "11:4028148672089662179",
+      "lastPropertyId": "10:541421985721798198",
+      "name": "DataCollectionDto",
+      "properties": [
+        {
+          "id": "1:6235899297434956900",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:668525702660936014",
+          "name": "kdtk",
+          "type": 9
+        },
+        {
+          "id": "3:9209726766610193895",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "4:716906295647841911",
+          "name": "delivery",
+          "type": 9
+        },
+        {
+          "id": "5:4673485695815311734",
+          "name": "idDelivery",
+          "type": 9
+        },
+        {
+          "id": "6:1785207004482635676",
+          "name": "tanggal",
+          "type": 10
+        },
+        {
+          "id": "7:4968047129390144044",
+          "name": "shift",
+          "type": 9
+        },
+        {
+          "id": "8:8317531560935722005",
+          "name": "pathImage",
+          "type": 9
+        },
+        {
+          "id": "9:5750643565926184800",
+          "name": "image",
+          "type": 23
+        },
+        {
+          "id": "10:541421985721798198",
+          "name": "status",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "13:8764448098414700375",
+      "lastPropertyId": "9:5493148859103464183",
+      "name": "MinusFraudDto",
+      "properties": [
+        {
+          "id": "1:5268009777201454863",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3550617749886013238",
+          "name": "userId",
+          "type": 9
+        },
+        {
+          "id": "3:7343328837728327198",
+          "name": "nominal",
+          "type": 8
+        },
+        {
+          "id": "4:6740943243511847023",
+          "name": "modus",
+          "type": 9
+        },
+        {
+          "id": "5:8424634359808522668",
+          "name": "tanggal",
+          "type": 10
+        },
+        {
+          "id": "6:9080403717703802634",
+          "name": "refundStatus",
+          "type": 1
+        },
+        {
+          "id": "7:6151216798337020922",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "8:3840471725099350339",
+          "name": "sanksi",
+          "type": 9
+        },
+        {
+          "id": "9:5493148859103464183",
+          "name": "image",
+          "type": 23
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "14:1669581220333080987",
+      "lastPropertyId": "2:2309337366644279682",
+      "name": "MinusOtherDto",
+      "properties": [
+        {
+          "id": "1:7424467598186915904",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2309337366644279682",
+          "name": "description",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "15:8154180972425922875",
+      "lastPropertyId": "3:1144336527217731497",
+      "name": "MinusRrakDto",
+      "properties": [
+        {
+          "id": "1:2848166083475192145",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4851631437367721606",
+          "name": "nominal",
+          "type": 8
+        },
+        {
+          "id": "3:1144336527217731497",
+          "name": "description",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "16:2923251674075371685",
+      "lastPropertyId": "4:2406490773056751637",
+      "name": "MinusVarianDto",
+      "properties": [
+        {
+          "id": "1:9112115576239308521",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:563157858410507168",
+          "name": "tanggal",
+          "type": 10
+        },
+        {
+          "id": "3:5529114014505122938",
+          "name": "nominal",
+          "type": 8
+        },
+        {
+          "id": "4:2406490773056751637",
+          "name": "status",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "17:2268202696213513731",
+      "lastPropertyId": "5:3755351099307431866",
+      "name": "ReviewOpnameDto",
+      "properties": [
+        {
+          "id": "1:3896003572446702956",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6789198366271483904",
+          "name": "kdtk",
+          "type": 9
+        },
+        {
+          "id": "3:4839279029173909068",
+          "name": "fraudId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "3:6805206044778478331",
+          "relationTarget": "MinusFraudDto"
+        },
+        {
+          "id": "4:88660185919006966",
+          "name": "varianId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "4:290951639689723846",
+          "relationTarget": "MinusVarianDto"
+        },
+        {
+          "id": "5:3755351099307431866",
+          "name": "otherId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "5:9086210474570755907",
+          "relationTarget": "MinusOtherDto"
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:5901753694986882983",
+          "name": "rrak",
+          "targetId": "15:8154180972425922875"
+        }
+      ]
+    },
+    {
+      "id": "18:422157466437429482",
+      "lastPropertyId": "4:5785949979085255608",
+      "name": "AdjustmentAuditDto",
+      "properties": [
+        {
+          "id": "1:4373144994124353311",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7139692286443098058",
+          "name": "nominal",
+          "type": 8
+        },
+        {
+          "id": "3:978926097615604562",
+          "name": "desc",
+          "type": 9
+        },
+        {
+          "id": "4:5785949979085255608",
+          "name": "summaryId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "6:5748366892335433012",
+          "relationTarget": "SummaryAuditDto"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "19:3628446464184133021",
+      "lastPropertyId": "5:391586806509146594",
+      "name": "SummaryAuditDto",
+      "properties": [
+        {
+          "id": "1:6277565669947570969",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5824929696025856716",
+          "name": "toko",
+          "type": 9
+        },
+        {
+          "id": "3:4939522669266338546",
+          "name": "tanggal",
+          "type": 10
+        },
+        {
+          "id": "4:944552597611241676",
+          "name": "values",
+          "type": 8
+        },
+        {
+          "id": "5:391586806509146594",
+          "name": "status",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "20:8045073363106513127",
+      "lastPropertyId": "4:4174219852625555018",
+      "name": "KurangSetorDto",
+      "properties": [
+        {
+          "id": "1:1410576719041200061",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:739901224641710051",
+          "name": "tanggal",
+          "type": 10
+        },
+        {
+          "id": "3:3266330514030753634",
+          "name": "nominal",
+          "type": 8
+        },
+        {
+          "id": "4:4174219852625555018",
+          "name": "summaryId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "7:4111383803756500249",
+          "relationTarget": "MasterOpnameDto"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "20:8045073363106513127",
+  "lastIndexId": "7:4111383803756500249",
+  "lastRelationId": "1:5901753694986882983",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    1372808077417560656,
+    1717406861681400125,
+    5415865140312534298,
+    2256544044456875332,
+    3808833552589199317
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    3605787884090904504,
+    9197449292650275365,
+    663380935250167588,
+    2799014879296497962,
+    6113426774907598975,
+    5381110183089124508,
+    6536259606676237946,
+    6356907225751111787,
+    5453097725057177130,
+    7326935000733494206,
+    3943856655219642262,
+    8160454244239882508,
+    7559887659065091880,
+    1484946232205907354,
+    6243527547745824193,
+    5449538360463873457,
+    799580305172770242,
+    7739308587633315175,
+    1805572751279984093,
+    2491749845887786352,
+    2691748545618413425,
+    6744019102414114370,
+    9101691790776042203,
+    4758951478067723166,
+    7166694981400656253,
+    5366488558233851359,
+    3045439292131274842,
+    1270158934174153016,
+    34320349626730124,
+    5309780112450010242,
+    2684433962551565612,
+    3552848683121367554,
+    6617206428070669206,
+    8131044893042386976,
+    2623730234609118369,
+    8199587643987638317,
+    3664227605227370882,
+    4295509868857615611,
+    6651360644248361047,
+    2309215021930502924,
+    3630394726246939293
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}

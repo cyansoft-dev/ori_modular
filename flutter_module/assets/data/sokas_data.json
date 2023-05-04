@@ -1,0 +1,17 @@
+{
+  "kdtk": "TEOT",
+  "tanggal": "2023-03-30",
+  "dana_finance": 500000,
+  "sales_curdate": 12479075,
+  "nota_rrak": 0,
+  "kurang_setor": [
+    {
+      "tanggal": "2023-03-27",
+      "nominal": 200000
+    },
+    {
+      "tanggal": "2023-03-28",
+      "nominal": 1520000
+    }
+  ]
+}
