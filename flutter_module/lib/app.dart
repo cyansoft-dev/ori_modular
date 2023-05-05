@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +29,7 @@ import 'features/splash/presentation/cubit/location_permission_cubit.dart';
 import 'features/splash/presentation/cubit/setting_cubit.dart';
 import 'features/splash/presentation/cubit/updater_cubit.dart';
 import 'features/store/presentation/cubit/store_cubit.dart';
+import 'features/store/presentation/cubit/timer_cubit.dart';
 import 'features/tenancy/presentation/cubit/master_tenant_cubit.dart';
 import 'features/tenancy/presentation/cubit/temp_master_tenant_cubit.dart';
 import 'features/tenancy/presentation/cubit/transaction_tenant_cubit.dart';
@@ -57,6 +59,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider<SettingCubit>(
           create: (context) => locator.get<SettingCubit>(),
+        ),
+        BlocProvider<TimerCubit>(
+          create: (context) => locator.get<TimerCubit>(),
         ),
         BlocProvider<StoreCubit>(
           create: (context) => locator.get<StoreCubit>(),
@@ -123,7 +128,6 @@ class App extends StatelessWidget {
         ),
       ],
       child: AppSizer(
-        designSize: AppSizerUtils.defaultSize,
         builder: (BuildContext context, Orientation? child) {
           return MaterialApp.router(
             title: 'ORI Administration using BLOC & Clean Architecture',
@@ -138,7 +142,7 @@ class App extends StatelessWidget {
               textTheme: GoogleFonts.openSansTextTheme(textTheme),
               pageTransitionsTheme: PageTransitionsTheme(
                 builders:
-                    Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
+                Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
                   TargetPlatform.values,
                   value: (_) => FadeTransitionBuilder(),
                 ),
@@ -154,6 +158,9 @@ class App extends StatelessWidget {
             ),
             showPerformanceOverlay: false,
             debugShowCheckedModeBanner: false,
+            useInheritedMediaQuery: true,
+            locale: DevicePreview.locale(context),
+            builder: DevicePreview.appBuilder,
             routerDelegate: appRoutes.routes.routerDelegate,
             routeInformationParser: appRoutes.routes.routeInformationParser,
             routeInformationProvider: appRoutes.routes.routeInformationProvider,
