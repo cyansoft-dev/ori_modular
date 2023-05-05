@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -159,8 +158,6 @@ class App extends StatelessWidget {
             showPerformanceOverlay: false,
             debugShowCheckedModeBanner: false,
             useInheritedMediaQuery: true,
-            locale: DevicePreview.locale(context),
-            builder: DevicePreview.appBuilder,
             routerDelegate: appRoutes.routes.routerDelegate,
             routeInformationParser: appRoutes.routes.routeInformationParser,
             routeInformationProvider: appRoutes.routes.routeInformationProvider,
